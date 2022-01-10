@@ -1,12 +1,12 @@
 # GUHS
 ⚠️ WIP project ⚠️
 
-Grub UEFI HTTP Selector, configure your boot order externaly via web server.
+GRUB UEFI HTTP Selector, configure your boot order externaly via web server.
 
 ## Why GUHS could be useful?
 * Integrate it in your home automation system: "OK Google, start living room PC with Ubuntu".
 * Configure it manually which target to boot before you start the computer.
-* Schedule when you prefer to boot your targets depending on calnedar.
+* Schedule when you prefer to boot your targets depending on calendar.
 
 ## Requirements
 * To have GRUB with UEFI.
@@ -15,5 +15,5 @@ Grub UEFI HTTP Selector, configure your boot order externaly via web server.
 * Docker for the web server OS
 
 ## What does include
-* GUHS configuration CLI for target machine with GRUB.
-* HTTP web server with exposed API and simple frontend.
+* GUHS CLI for target machine with GRUB.
+* GUHS HTTP web server with exposed API and simple frontend.
