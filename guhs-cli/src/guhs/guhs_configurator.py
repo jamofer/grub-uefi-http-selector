@@ -9,13 +9,21 @@ def commit():
     pass
 
 
-class GuhsConfigurationError(RuntimeError):
-    pass
-
-
 def get(name):
     pass
 
 
 def current() -> GuhsConfiguration:
+    pass
+
+
+def install(fqdn):
+    pass
+
+
+def uninstall():
+    return None
+
+
+class GuhsConfigurationError(RuntimeError):
     pass

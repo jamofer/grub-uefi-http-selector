@@ -6,30 +6,34 @@ from guhs.guhs_configuration import Target, GuhsProperties
 from guhs.guhs_configurator import GuhsConfigurationError
 
 
-def configure():
+def install():
     configuration = guhs_configurator.current()
     boot_targets = _format_boot_targets(configuration.targets)
 
     server = input('GUHS HTTP server hostname/ip? ')
-    set(GuhsProperties.SERVER, server)
+    guhs_configurator.install(server)
 
     logger.info('Available boot targets:')
     logger.info(boot_targets)
     target = input(f'Default target? [{configuration.default_target.order_id}] ')
     if target:
-        set(GuhsProperties.DEFAULT_TARGET, target)
+        _set(GuhsProperties.DEFAULT_TARGET, target)
 
     timeout = input(f'Boot selection timeout? [{configuration.boot_selection_timeout}] ')
     if timeout:
-        set(GuhsProperties.BOOT_SELECTION_TIMEOUT, timeout)
+        _set(GuhsProperties.BOOT_SELECTION_TIMEOUT, timeout)
 
     guhs_configurator.commit()
+
+
+def uninstall():
+    guhs_configurator.uninstall()
 
 
 def show():
     configuration = guhs_configurator.current()
 
-    if configuration.server is None:
+    if not configuration.installed:
         logger.error('GUHS was not found in the system. Did you configure it with "guhs-cli configure"')
         sys.exit(1)
 
