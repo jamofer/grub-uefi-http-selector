@@ -3,14 +3,13 @@ import pytest
 from mock.mock import patch, call
 
 import guhs_cli
-from guhs.guhs_configuration import Target, GuhsConfiguration, GuhsProperties
+from guhs.guhs_configuration import Target, GuhsConfiguration, GuhsParameters
 from guhs.guhs_configurator import GuhsConfigurationError
 
 
 class TestGuhsCli(unittest.TestCase):
     def setUp(self):
         self.configurator_set = patch('guhs.guhs_configurator.set').start()
-        self.configurator_commit = patch('guhs.guhs_configurator.commit').start()
         self.configurator_get = patch('guhs.guhs_configurator.get').start()
         self.configurator_current = patch('guhs.guhs_configurator.current').start()
         self.input = patch('builtins.input').start()
@@ -23,7 +22,6 @@ class TestGuhsCli(unittest.TestCase):
     def test_set_configuration(self):
         guhs_cli.set('default-target', '2')
         self.configurator_set.assert_called_with('default-target', '2')
-        self.configurator_commit.assert_called()
 
     def test_it_fails_setting_configuration(self):
         self.configurator_set.side_effect = GuhsConfigurationError('message')
@@ -32,7 +30,6 @@ class TestGuhsCli(unittest.TestCase):
             guhs_cli.set('default-target', '2')
 
         self.configurator_set.assert_called_with('default-target', '2')
-        self.configurator_commit.assert_not_called()
 
     def test_get_configuration(self):
         self.configurator_get.return_value = '2'
@@ -92,10 +89,9 @@ class TestGuhsCli(unittest.TestCase):
         guhs_cli.install()
 
         self.configurator_set.assert_has_calls([
-            call(GuhsProperties.DEFAULT_TARGET, "target"),
-            call(GuhsProperties.BOOT_SELECTION_TIMEOUT, "timeout"),
+            call(GuhsParameters.DEFAULT_TARGET, "target"),
+            call(GuhsParameters.BOOT_SELECTION_TIMEOUT, "timeout"),
         ])
-        self.configurator_commit.assert_called()
 
     def test_it_skips_configuring_target_when_is_empty(self):
         self.input.side_effect = ["host", "", "timeout"]
@@ -103,10 +99,9 @@ class TestGuhsCli(unittest.TestCase):
         guhs_cli.install()
 
         self.configurator_set.assert_called_once_with(
-            GuhsProperties.BOOT_SELECTION_TIMEOUT, "timeout"
+            GuhsParameters.BOOT_SELECTION_TIMEOUT, "timeout"
         )
         self.configurator_install.assert_called_once_with('host')
-        self.configurator_commit.assert_called()
 
     def test_it_skips_configuring_timeout_when_is_empty(self):
         self.input.side_effect = ["host", "target", ""]
@@ -114,10 +109,9 @@ class TestGuhsCli(unittest.TestCase):
         guhs_cli.install()
 
         self.configurator_set.assert_called_once_with(
-            GuhsProperties.DEFAULT_TARGET, "target"
+            GuhsParameters.DEFAULT_TARGET, "target"
         )
         self.configurator_install.assert_called_once_with('host')
-        self.configurator_commit.assert_called()
 
     def test_it_stops_configuring_when_set_fails(self):
         self.input.side_effect = ["host", "target", "timeout"]
@@ -127,7 +121,6 @@ class TestGuhsCli(unittest.TestCase):
             guhs_cli.install()
 
         self.configurator_install.assert_called_once_with('host')
-        self.configurator_commit.assert_not_called()
 
     def test_it_uninstalls(self):
         guhs_cli.uninstall()

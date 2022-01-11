@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from enum import Enum
 from typing import Optional
 
 
@@ -16,12 +17,12 @@ class GuhsConfiguration(object):
     boot_selection_timeout: Optional[int] = None
     default_target: Optional[Target] = None
 
-    def to_dict(self):
-        return {
 
-        }
-
-
-class GuhsProperties:
+class GuhsParameters(str, Enum):
     DEFAULT_TARGET = 'default-target'
     BOOT_SELECTION_TIMEOUT = 'boot-selection-timeout'
+
+    @classmethod
+    def list(cls):
+        return list(map(lambda parameter: parameter.value, cls))
+

@@ -2,7 +2,7 @@ import sys
 
 import logger
 from guhs import guhs_configurator
-from guhs.guhs_configuration import Target, GuhsProperties
+from guhs.guhs_configuration import Target, GuhsParameters
 from guhs.guhs_configurator import GuhsConfigurationError
 
 
@@ -15,15 +15,13 @@ def install():
 
     logger.info('Available boot targets:')
     logger.info(boot_targets)
-    target = input(f'Default target? [{configuration.default_target.order_id}] ')
+    target = input(f'Default target?')
     if target:
-        _set(GuhsProperties.DEFAULT_TARGET, target)
+        set(GuhsParameters.DEFAULT_TARGET, target)
 
-    timeout = input(f'Boot selection timeout? [{configuration.boot_selection_timeout}] ')
+    timeout = input(f'Boot selection timeout?')
     if timeout:
-        _set(GuhsProperties.BOOT_SELECTION_TIMEOUT, timeout)
-
-    guhs_configurator.commit()
+        set(GuhsParameters.BOOT_SELECTION_TIMEOUT, timeout)
 
 
 def uninstall():
@@ -64,12 +62,7 @@ def _format_boot_target(target: Target):
     return f'{target.order_id}. {target.name}'
 
 
-def set(name: str, value: str):
-    _set(name, value)
-    guhs_configurator.commit()
-
-
-def _set(name, value):
+def set(name, value):
     try:
         guhs_configurator.set(name, value)
     except GuhsConfigurationError as error:
