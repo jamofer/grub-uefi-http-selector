@@ -16,3 +16,15 @@ def default_target():
 
 def boot_selection_timeout():
     return None
+
+
+def scripts():
+    return None
+
+
+def remove_script(filename):
+    return None
+
+
+def read_script(filename):
+    return None

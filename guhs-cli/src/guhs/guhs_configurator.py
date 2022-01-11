@@ -3,9 +3,7 @@ from http import HTTPStatus
 
 import requests
 
-from guhs import shell
 from guhs.grub import grub_service
-from guhs.grub.grub_service import GRUB_CONFIG_FOLDER
 from guhs.guhs_configuration import GuhsConfiguration, Target, GuhsParameters
 from guhs.json_encoders import set_parameter_encoder, get_parameter_encoder, get_parameter_decoder
 from guhs.json_encoders.configuration_request_encoder import from_guhs_configuration
@@ -13,7 +11,6 @@ from guhs.json_encoders.configuration_response_decoder import to_gush_configurat
 
 GUHS_CONFIGURATION_FILENAME = 'boot_source'
 GUHS_GRUB_FILENAME = '05_guhs'
-GUHS_GRUB_PATH = f'{GRUB_CONFIG_FOLDER}/{GUHS_GRUB_FILENAME}'
 
 
 def generate_grub_script(fqdn):
@@ -33,7 +30,7 @@ def generate_grub_script(fqdn):
 def current() -> GuhsConfiguration:
     configuration = _configuration_from_grub()
 
-    if shell.file_exists(GUHS_GRUB_PATH):
+    if _is_installed():
         remote_configuration = _configuration_from_server()
         remote_configuration.targets = configuration.targets
 
@@ -70,7 +67,7 @@ def _configuration_from_server():
 
 
 def _configured_server_fqdn():
-    gush_grub_script = shell.read_file(GUHS_GRUB_PATH)
+    gush_grub_script = grub_service.read_script(GUHS_GRUB_FILENAME)
     server = re.findall(r'\(http,(.*)\)', gush_grub_script)[0]
     return server
 
@@ -83,6 +80,8 @@ def install(fqdn):
 
 
 def set(name, value):
+    if not _is_installed():
+        raise GuhsConfigurationError('Install GUHS first.')
     if name not in GuhsParameters.list():
         raise GuhsConfigurationError(f'Unable to set {name}: parameter not found.')
 
@@ -96,6 +95,8 @@ def set(name, value):
 
 
 def get(name):
+    if not _is_installed():
+        raise GuhsConfigurationError('Install GUHS first.')
     if name not in GuhsParameters.list():
         raise GuhsConfigurationError(f'Unable to set {name}: parameter not found.')
 
@@ -107,7 +108,12 @@ def get(name):
 
 
 def uninstall():
-    return None
+    if _is_installed():
+        grub_service.remove_script(GUHS_GRUB_FILENAME)
+
+
+def _is_installed():
+    return GUHS_GRUB_FILENAME in grub_service.scripts()
 
 
 class GuhsConfigurationError(RuntimeError):
