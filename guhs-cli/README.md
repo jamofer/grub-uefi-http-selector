@@ -22,6 +22,7 @@ Available boot targets:
   2. Ubuntu2
   3. Windows XP
 Default target? [1] <<user input>>
+Boot selection timeout? [10] <<user_input>>
 ```
 
 ### Show current configuration
@@ -54,6 +55,9 @@ $ guhs-cli get server
 $ guhs-cli set default-target=1
 $ guhs-cli set default-target=Ubuntu
 $ guhs-cli set default-target=Windows XP
+
+## Set boot selection timeout
+$ guhs-cli set boot-selection-timeout=1
 
 ## Get boot order
 $ guhs-cli get default-target
