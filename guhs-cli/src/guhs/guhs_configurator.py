@@ -9,7 +9,7 @@ from guhs.json_encoders.configuration_request_encoder import from_guhs_configura
 from guhs.json_encoders.configuration_response_decoder import to_gush_configuration
 
 GUHS_CONFIGURATION_FILENAME = 'boot_source'
-GUHS_GRUB_FILENAME = '05_guhs'
+GUHS_GRUB_FILENAME = '06_guhs'
 
 
 def generate_grub_script(fqdn):

@@ -57,6 +57,7 @@ class GuhsConfiguration(BaseModel):
 
 @app.post('/api/configuration')
 def configure(request: GuhsConfiguration):
-    storage.save('targets', request.targets)
-    storage.save('boot_selection_timeout', request.boot_selection_timeout)
-    storage.save('default_target', request.default_target)
+    request_json = request.dict()
+    storage.save('targets', request_json['targets'])
+    storage.save('boot_selection_timeout', request_json['boot_selection_timeout'])
+    storage.save('default_target', request_json['default_target'])

@@ -18,6 +18,9 @@ def deploy_script(filename, contents):
     shell.write_file(path, contents)
     rc, stdout, stderr = shell.execute_command('/usr/sbin/update-grub')
 
+    print(stdout)
+    print(stderr)
+
     if rc != 0:
         shell.remove_file(path)
         raise GrubServiceError(f'Failed updating GRUB with deployed script "{filename}". Removed')
