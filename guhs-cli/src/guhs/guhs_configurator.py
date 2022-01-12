@@ -49,11 +49,21 @@ def _configuration_from_grub():
     for i in range(len(grub_targets)):
         targets.append(Target(i+1, grub_targets[i]))
 
+    grub_target = grub_service.default_target()
+    default_target = targets[0]
+
+    if re.match(r'\d+$', grub_target) is not None:
+        default_target = targets[int(grub_target)]
+    else:
+        for target in targets:
+            if grub_target == target:
+                default_target = target
+
     return GuhsConfiguration(
         False,
         targets,
         boot_selection_timeout=grub_service.boot_selection_timeout(),
-        default_target=targets[grub_service.default_target()]
+        default_target=default_target
     )
 
 

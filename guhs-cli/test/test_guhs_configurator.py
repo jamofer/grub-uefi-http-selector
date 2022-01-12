@@ -30,7 +30,7 @@ class TestGuhsConfigurator(unittest.TestCase):
 
     def test_it_returns_current_configuration(self):
         self.grub_boot_targets.return_value = ['First', 'Second']
-        self.grub_default_target.return_value = 1
+        self.grub_default_target.return_value = '1'
         self.grub_boot_selection_timeout.return_value = 10
         self.grub_scripts.return_value = []
 
@@ -56,7 +56,7 @@ class TestGuhsConfigurator(unittest.TestCase):
         }
         self.get.return_value = response
         self.grub_boot_targets.return_value = ['First', 'Second']
-        self.grub_default_target.return_value = 1
+        self.grub_default_target.return_value = '1'
         self.grub_boot_selection_timeout.return_value = 10
         self.grub_scripts.return_value = [GUHS_GRUB_FILENAME]
         self.grub_read_script.return_value = guhs_configurator.generate_grub_script('fqdn')
@@ -76,6 +76,7 @@ class TestGuhsConfigurator(unittest.TestCase):
     def test_it_installs_server(self):
         self.post.return_value = response_ok()
         self.grub_boot_targets.return_value = ['name', 'name2']
+        self.grub_default_target.return_value = '1'
         self.grub_boot_selection_timeout.return_value = 10
         self.grub_scripts.return_value = []
 
