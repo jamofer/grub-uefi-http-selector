@@ -47,7 +47,7 @@ def remove_script(filename):
 
 
 def read_script(filename):
-    shell.read_file(f'{GRUB_CONFIG_FOLDER}/{filename}')
+    return shell.read_file(f'{GRUB_CONFIG_FOLDER}/{filename}')
 
 
 class GrubServiceError(RuntimeError): pass
