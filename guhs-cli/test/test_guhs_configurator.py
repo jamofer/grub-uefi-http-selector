@@ -70,7 +70,7 @@ class TestGuhsConfigurator(unittest.TestCase):
             default_target=Target(1, 'First'),
             boot_selection_timeout=5
         )
-        self.get.assert_called_with('fqdn/api/configuration')
+        self.get.assert_called_with('http://fqdn/api/configuration')
         self.grub_read_script.assert_called_once_with(GUHS_GRUB_FILENAME)
 
     def test_it_installs_server(self):
@@ -83,7 +83,7 @@ class TestGuhsConfigurator(unittest.TestCase):
         guhs_configurator.install('fqdn')
 
         self.post.assert_called_once_with(
-            'fqdn',
+            'http://fqdn/api/configuration',
             json={
                 'targets': [
                     {'order_id': 1, 'name': 'name'},
@@ -106,7 +106,7 @@ class TestGuhsConfigurator(unittest.TestCase):
         guhs_configurator.set('default-target', '1')
 
         self.post.assert_called_once_with(
-            'fqdn/api/set',
+            'http://fqdn/api/set',
             json={'parameter': 'default_target', 'value': '1'}
         )
 
@@ -129,7 +129,7 @@ class TestGuhsConfigurator(unittest.TestCase):
 
         assert guhs_configurator.get('boot-selection-timeout') == 5
 
-        self.get.assert_called_once_with('fqdn/api/get/boot_selection_timeout')
+        self.get.assert_called_once_with('http://fqdn/api/get/boot_selection_timeout')
 
     def test_uninstall(self):
         self.grub_scripts.return_value = [GUHS_GRUB_FILENAME]

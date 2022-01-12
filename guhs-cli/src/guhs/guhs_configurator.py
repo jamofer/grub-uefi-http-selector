@@ -1,8 +1,7 @@
 import re
 from http import HTTPStatus
 
-import requests
-
+from guhs import guhs_gateway
 from guhs.grub import grub_service
 from guhs.guhs_configuration import GuhsConfiguration, Target, GuhsParameters
 from guhs.json_encoders import set_parameter_encoder, get_parameter_encoder, get_parameter_decoder
@@ -69,7 +68,7 @@ def _configuration_from_grub():
 
 def _configuration_from_server():
     server = _configured_server_fqdn()
-    response = requests.get(f'{server}/api/configuration')
+    response = guhs_gateway.get(server, '/api/configuration')
     remote_configuration = to_gush_configuration(response.json())
     remote_configuration.server = server
 
@@ -85,7 +84,7 @@ def _configured_server_fqdn():
 def install(fqdn):
     configuration = current()
 
-    requests.post(fqdn, json=from_guhs_configuration(configuration))
+    guhs_gateway.post(fqdn, '/api/configuration', from_guhs_configuration(configuration))
     grub_service.deploy_script(GUHS_GRUB_FILENAME, generate_grub_script(fqdn))
 
 
@@ -97,8 +96,7 @@ def set(name, value):
 
     request_body = set_parameter_encoder.encode(name, value)
 
-    url = f'{_configured_server_fqdn()}/api/set'
-    response = requests.post(url, json=request_body)
+    response = guhs_gateway.post(_configured_server_fqdn(), '/api/set', request_body)
 
     if response.status_code != HTTPStatus.OK:
         raise GuhsConfigurationError(f'Unable to set {name} with {value} in remote server.')
@@ -111,8 +109,7 @@ def get(name):
         raise GuhsConfigurationError(f'Unable to set {name}: parameter not found.')
 
     encoded_name = get_parameter_encoder.encode_name(name)
-    url = f'{_configured_server_fqdn()}/api/get/{encoded_name}'
-    response = requests.get(url)
+    response = guhs_gateway.get(_configured_server_fqdn(), f'/api/get/{encoded_name}')
 
     return get_parameter_decoder.decode(response.json())
 

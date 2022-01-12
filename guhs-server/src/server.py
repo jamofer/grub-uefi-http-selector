@@ -8,6 +8,7 @@ from pydantic import BaseModel
 import boot_script
 import storage
 
+
 app = fastapi.FastAPI()
 
 
