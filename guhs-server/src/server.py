@@ -1,9 +1,11 @@
+import re
 from typing import List
 
 import pydantic.typing
 
 import fastapi
 from pydantic import BaseModel
+from starlette.responses import PlainTextResponse
 
 import boot_script
 import storage
@@ -12,11 +14,19 @@ import storage
 app = fastapi.FastAPI()
 
 
-@app.get('/boot_source')
+def default_target():
+    target = storage.get('default_target')
+    if re.match(r'\d+', target) is not None:
+        return str(int(target) - 1)
+
+
+@app.get('/boot_source.cfg')
 def boot_source():
-    return boot_script.generate(
-        storage.get('boot_selection_timeout'),
-        storage.get('default_target')
+    return PlainTextResponse(
+        boot_script.generate(
+            default_target(),
+            storage.get('boot_selection_timeout')
+        )
     )
 
 
