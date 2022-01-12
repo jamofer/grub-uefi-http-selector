@@ -1,6 +1,6 @@
 import json
 
-from src import shell
+import shell
 
 STORAGE_FILE = '/opt/guhs/guhs_server.json'
 

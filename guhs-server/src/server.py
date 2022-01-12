@@ -5,7 +5,8 @@ import pydantic.typing
 import fastapi
 from pydantic import BaseModel
 
-from src import boot_script, storage
+import boot_script
+import storage
 
 app = fastapi.FastAPI()
 
