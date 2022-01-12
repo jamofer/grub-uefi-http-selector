@@ -16,6 +16,7 @@ def boot_targets():
 def deploy_script(filename, contents):
     path = f'{GRUB_CONFIG_FOLDER}/{filename}'
     shell.write_file(path, contents)
+    rc, stdout, stderr = shell.execute_command(f'chmod +x {path}')
     rc, stdout, stderr = shell.execute_command('/usr/sbin/update-grub')
 
     print(stdout)
