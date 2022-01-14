@@ -15,11 +15,11 @@ def install():
 
     logger.info('Available boot targets:')
     logger.info(boot_targets)
-    target = input(f'Default target?')
+    target = input(f'Default target? ')
     if target:
         set(GuhsParameters.DEFAULT_TARGET, target)
 
-    timeout = input(f'Boot selection timeout?')
+    timeout = input(f'Boot selection timeout? ')
     if timeout:
         set(GuhsParameters.BOOT_SELECTION_TIMEOUT, timeout)
 
