@@ -1,7 +1,7 @@
 import unittest
 
 import pytest
-from mock.mock import patch
+from mock.mock import patch, call
 
 from helpers import grub_cfg_sample
 from helpers.default_grub_sample import generate_default_grub
@@ -31,7 +31,10 @@ class TestGrubService(unittest.TestCase):
         grub_service.deploy_script('03_asd', 'asddfasd')
 
         self.write_file.assert_called_once_with(f'{GRUB_CONFIG_FOLDER}/03_asd', 'asddfasd')
-        self.execute_command.assert_called_once_with('/usr/sbin/update-grub')
+        self.execute_command.assert_has_calls([
+            call(f'chmod +x {GRUB_CONFIG_FOLDER}/03_asd'),
+            call('/usr/sbin/update-grub')
+        ])
 
     def test_it_fails_deploying_script(self):
         self.execute_command.return_value = (1, "", "")
@@ -40,7 +43,10 @@ class TestGrubService(unittest.TestCase):
             grub_service.deploy_script('03_asd', 'asddfasd')
 
         self.write_file.assert_called_once_with(f'{GRUB_CONFIG_FOLDER}/03_asd', 'asddfasd')
-        self.execute_command.assert_called_once_with('/usr/sbin/update-grub')
+        self.execute_command.assert_has_calls([
+            call(f'chmod +x {GRUB_CONFIG_FOLDER}/03_asd'),
+            call('/usr/sbin/update-grub')
+        ])
         self.remove_file.assert_called_once_with(f'{GRUB_CONFIG_FOLDER}/03_asd')
 
     def test_it_returns_default_target(self):

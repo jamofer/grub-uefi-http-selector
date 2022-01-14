@@ -13,16 +13,16 @@ pip3 install guhs-cli
 ```
 
 ## Usage
-### Interactive shell configuration
+### GUHS installation
 ```shell
-$ guhs-cli configure
+$ guhs-cli install
 GUHS HTTP server hostname/ip? <<user input>>
 Available boot targets:
   1. Ubuntu
   2. Ubuntu2
   3. Windows XP
-Default target? [1] <<user input>>
-Boot selection timeout? [10] <<user_input>>
+Default target? <<user input>>
+Boot selection timeout? <<user_input>>
 ```
 
 ### Show current configuration

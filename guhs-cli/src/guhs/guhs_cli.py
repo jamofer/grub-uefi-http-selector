@@ -1,6 +1,6 @@
 import sys
 
-import logger
+from guhs import logger
 from guhs import guhs_configurator
 from guhs.guhs_configuration import Target, GuhsParameters
 from guhs.guhs_configurator import GuhsConfigurationError
@@ -70,7 +70,7 @@ def set(name, value):
         sys.exit(1)
 
 
-def get(name: str):
+def get(name):
     value = _get(name)
     logger.info(value)
 

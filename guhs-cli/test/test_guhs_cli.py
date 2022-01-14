@@ -2,7 +2,7 @@ import unittest
 import pytest
 from mock.mock import patch, call
 
-import guhs_cli
+from guhs import guhs_cli
 from guhs.guhs_configuration import Target, GuhsConfiguration, GuhsParameters
 from guhs.guhs_configurator import GuhsConfigurationError
 
