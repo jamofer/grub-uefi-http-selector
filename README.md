@@ -1,7 +1,9 @@
 # GUHS
-⚠️ WIP project ⚠️
 
 GRUB UEFI HTTP Selector, configure your boot order externaly via web server.
+
+You can install GUHS in your system using [GUHS CLI](https://github.com/jamofer/guhs-cli) once you deployed
+the GUHS Server somewhere the host machine could reach it using HTTP.
 
 ## Why GUHS could be useful?
 * Integrate it in your home automation system: "OK Google, start living room PC with Ubuntu".
@@ -10,9 +12,8 @@ GRUB UEFI HTTP Selector, configure your boot order externaly via web server.
 
 ## Requirements
 * To have GRUB with UEFI.
-* Ethernet connection available.
-* Deploy the web server somewhere where it will be available and reachable for the PC network. (IE: Raspberry PI)
-* Docker for the web server OS
+* Network card available.
+* A reachable server for the PC network. (IE: Raspberry PI)
 
 ## What does include
 * GUHS CLI for target machine with GRUB.
