@@ -18,6 +18,7 @@ the [GUHS Server](https://github.com/jamofer/guhs-server) in other machine.
 * A second machine to deploy GUHS Server. (IE: Raspberry PI)
 
 ## How to install
+### Install and deploy GUHS server
 ```shell
 # Install the web server
 pip3 install guhs-server
@@ -26,10 +27,18 @@ pip3 install guhs-server
 nohup guhs-server &
 ```
 
+### Install GUHS in GRUB
 ```shell
 # Install it in your desirable GRUB system
 sudo pip3 install guhs-cli
 
 # Install GUHS in your GRUB bootloader
-sudo guhs-cli install
+$ guhs-cli install
+GUHS Server hostname/ip? <<user input>>
+Available boot targets:
+  1. Ubuntu
+  2. Ubuntu2
+  3. Windows XP
+Default target? <<user input>>
+Boot selection timeout? <<user_input>>
 ```
